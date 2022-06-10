@@ -7,9 +7,11 @@ from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
+from plotly.graph_objs import Bar, Layout, Figure
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
+
+import numpy as np
 
 
 app = Flask(__name__)
@@ -95,7 +97,7 @@ def index():
                 'title': "Category", 
                 'titlefont': {'color': 'black', 'size': 12},
                 'tickangle':45,
-                'automargin': True
+#                 'automargin': True
                   }
                 )
     
@@ -129,7 +131,7 @@ def go():
 
 
 def main():
-    app.run(host='0.0.0.0', port=5050, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=True)
 
 
 if __name__ == '__main__':
