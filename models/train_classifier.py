@@ -22,6 +22,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 from sklearn.multioutput import MultiOutputClassifier
+from sklearn.externals import joblib
 import nltk
 nltk.download('stopwords')
 
@@ -29,10 +30,11 @@ nltk.download('stopwords')
 def load_data(database_filepath):
     engine = create_engine('sqlite:///'+ database_filepath)
     df = pd.read_sql_table('ETL_message', engine)
-    X = df['message']
-    Y = df.drop(['id','message','original','genre'],axis = 1)
+    X = df.message
+    y = df.iloc[:,4:]
+    category_names = list(df.columns[4:])
     
-    return X, Y, df
+    return X, y, category_names
 
 
 def tokenize(text):
@@ -60,23 +62,36 @@ def build_model():
         ('tf_idf', TfidfTransformer()),
         ('mo_clf', MultiOutputClassifier(RandomForestClassifier()))
     ])
+#     parameters = {
+# #     'cnt_vect__max_features' : [None, 10000, 50000],
+# #     'tf_idf__use_idf' : [True, False],
+#     'mo_clf__estimator__n_estimators' : [100,200,300], 
+#     'mo_clf__estimator__min_samples_split' : [2,3,4]
+#     }
+
+#     clf_grid = GridSearchCV(pipeline, param_grid = parameters, verbose = 2, n_jobs = -1)
     return pipeline
 
 def evaluate_model(model, X_test, Y_test, category_names):
     test_pred = model.predict(X_test)
+        # print the metrics
+    for i, col in enumerate(category_names):
+        print('{} category metrics: '.format(col))
+        print(classification_report(Y_test.iloc[:,i], test_pred[:,i]))
     
 
 
 def save_model(model, model_filepath):
-    n_bytes = 2**31
-    max_bytes = 2**31 - 1
-    data = bytearray(n_bytes)
+#     n_bytes = 2**31
+#     max_bytes = 2**31 - 1
+#     data = bytearray(n_bytes)
 
-    ## write
-    bytes_out = pickle.dumps(model)
-    with open(model_filepath, 'wb') as f_out:
-        for idx in range(0, len(bytes_out), max_bytes):
-            f_out.write(bytes_out[idx:idx+max_bytes])
+#     ## write
+#     bytes_out = pickle.dumps(model)
+#     with open(model_filepath, 'wb') as f_out:
+#         for idx in range(0, len(bytes_out), max_bytes):
+#             f_out.write(bytes_out[idx:idx+max_bytes])
+    joblib.dump(model, model_filepath)
 
 
 def main():

@@ -6,13 +6,13 @@ from sqlalchemy import create_engine
 def load_data(messages_filepath, categories_filepath):
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
-    df = messages.merge(categories, on = 'id', how = 'outer')
+    df = messages.merge(categories, on = 'id', how = 'inner')
     return df
 
 
 def clean_data(df):
     categories = df['categories'].str.split(pat = ';',expand = True)
-    row = categories.iloc[1]
+    row = categories.iloc[0]
     category_colnames =list(map(lambda x: x[:-2],row))
     categories.columns = category_colnames
     for column in categories:
@@ -21,7 +21,7 @@ def clean_data(df):
 
         # convert column from string to numeric
         categories[column] = categories[column].astype(int)
-    df.drop(['categories'],axis = 1, inplace = True)
+    df.drop(columns=['categories'],axis = 1, inplace = True)
     df = pd.concat([df,categories], join='outer', axis=1)
     df.drop_duplicates(inplace = True)
     return df
