@@ -27,6 +27,13 @@ To clone the git repository: https://github.com/ShefaliL/Disaster-Response-Udaci
 - Run the following command in the app's directory to run your web app. python run.py
 - Go to http://0.0.0.0:3001/
 
+# To create a processed sqlite db
+python process_data.py disaster_messages.csv disaster_categories.csv DisasterResponse.db
+# To train and save a pkl model
+python train_classifier.py ../data/DisasterResponse.db classifier.pkl
+# To deploy the application locally
+python run.py
+
 # Additional Material
 - In the data and models folder you can find two jupyter notebook that will help you understand how the model works step by step:
 -ETL Preparation Notebook: learn everything about the implemented ETL pipeline
