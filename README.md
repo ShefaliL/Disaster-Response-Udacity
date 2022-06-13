@@ -9,6 +9,10 @@ The following essential sections make up this project:
 - Create a machine learning pipeline to train a text classification system that can categorize messages into several categories.
 - Create a web application that can display model results in real time.
 
+# File Structure
+
+![Screenshot 2022-06-12 222600](https://user-images.githubusercontent.com/76598077/173268591-568a00fd-8d63-4336-a401-e0572f249e8b.png)
+
 # Dependencies
 - Python 3.5+
 - Machine Learning Libraries: NumPy, SciPy, Pandas, Sciki-Learn
@@ -26,6 +30,13 @@ To clone the git repository: https://github.com/ShefaliL/Disaster-Response-Udaci
 - To run the ML pipeline that loads data from DB, trains classifier and saves the classifier as a pickle file python models/train_classifier.py data/disaster_response_db.db models/classifier.pkl
 - Run the following command in the app's directory to run your web app. python run.py
 - Go to http://0.0.0.0:3001/
+
+# To create a processed sqlite db
+python process_data.py disaster_messages.csv disaster_categories.csv DisasterResponse.db
+# To train and save a pkl model
+python train_classifier.py ../data/DisasterResponse.db classifier.pkl
+# To deploy the application locally
+python run.py
 
 # Additional Material
 - In the data and models folder you can find two jupyter notebook that will help you understand how the model works step by step:
