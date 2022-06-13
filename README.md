@@ -9,6 +9,10 @@ The following essential sections make up this project:
 - Create a machine learning pipeline to train a text classification system that can categorize messages into several categories.
 - Create a web application that can display model results in real time.
 
+# File Structure
+
+![Screenshot 2022-06-12 222600](https://user-images.githubusercontent.com/76598077/173268591-568a00fd-8d63-4336-a401-e0572f249e8b.png)
+
 # Dependencies
 - Python 3.5+
 - Machine Learning Libraries: NumPy, SciPy, Pandas, Sciki-Learn
