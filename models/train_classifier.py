@@ -28,6 +28,18 @@ nltk.download('stopwords')
 
 
 def load_data(database_filepath):
+    '''
+    load_data
+    Load data from given database specified by the database_filepath
+
+    Input:
+    database_filepath filepath to database
+
+    Returns:
+    X storing messages column
+    y storing the target column
+    category_names all category column names
+    '''
     engine = create_engine('sqlite:///'+ database_filepath)
     df = pd.read_sql_table('ETL_message', engine)
     X = df.message
@@ -38,6 +50,16 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    '''
+    tokenize
+    Tokenizing the given text
+
+    Input:
+    text input text
+
+    Returns:
+    tokens returning tokens derived fromthe given text
+    '''
     # Making all the text as lowercase
     text = text.lower()
     # Removing the punctuations using re module
@@ -57,6 +79,15 @@ def tokenize(text):
 
 
 def build_model():
+    '''
+    build_model
+    Building our ML model
+
+    Input:
+
+    Returns:
+    pipeline our ML pipeline model
+    '''
     pipeline = Pipeline([
         ('cnt_vect', CountVectorizer(tokenizer = tokenize)),
         ('tf_idf', TfidfTransformer()),
@@ -73,6 +104,19 @@ def build_model():
     return pipeline
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    '''
+    evaluate_model
+    evaluating our model based on test data
+
+    Input:
+    model  our ML model
+    X_test  X test
+    Y_test Y test
+    category_names column names
+
+    Returns:
+
+    '''
     test_pred = model.predict(X_test)
         # print the metrics
     for i, col in enumerate(category_names):
@@ -82,6 +126,16 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    '''
+    save_model
+    saving our model to a pickle file
+
+    Input:
+    model  our ML model
+    model_filepath  file path to our save our model
+
+    Returns:
+    '''
 #     n_bytes = 2**31
 #     max_bytes = 2**31 - 1
 #     data = bytearray(n_bytes)
